@@ -8,20 +8,26 @@
 import SwiftUI
 
 struct ContentView: View {
-    @State private var rotate : Double = 0
-    @State private var scale : CGFloat = 1
+    @State private var isButtonVisible = true
+
     var body: some View {
-        Button(action: {
-            rotate = (rotate < 360 ? rotate + 60 : 0)
-            scale = (scale < 2.8 ? scale + 0.3 : 1)
-        }, label: {
-            Text("click to animation")
-                .rotationEffect(.degrees(rotate))
-                .scaleEffect(scale)
-                .animation(.linear(duration:1).repeatForever(autoreverses:true))
-//                .animation(.linear(duration: 1).repeatCount(10))
-//                .animation(.spring(response: 1, dampingFraction: 0.2, blendDuration: 0))
-        })
+
+        VStack{
+            Toggle(isOn: $isButtonVisible.animation(.linear(duration: 2))){
+                Text("Show/Hide Button")
+            }
+            .padding()
+            if isButtonVisible{
+                Button(action: {
+                    
+                }, label: {
+                    Text("Example Button")
+                }).font(.largeTitle)
+//                    .transition(.slide)//컴바인해서 효과를 멋지게 만들수 있어
+                    .transition(AnyTransition.opacity.combined(with: .move(edge: .top)))
+//                    .transition(.asymmetric(insertion: .scale, removal: .slide)) //비대칭적 전환 가능
+            }
+        }
     }
 }
 
